@@ -18,9 +18,8 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(job)
 end)
 
 RegisterCommand("myInfo", function(source, args)
-    local infoOnline = lib.callback.await("jk-myinfo::server::getPlayersOnline", false)
+    local infoOnline = lib.callback.await("jk-myinfo::server::getPlayersOnline", 200)
     local licenses = lib.callback.await("jk-myinfo::server::getLicenses", false)
-
     SendNUIMessage({
         action = "open",
         data = {

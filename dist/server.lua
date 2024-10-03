@@ -1,5 +1,6 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
 local data = {}
+
 do
  for k, v in pairs(Config.Jobs) do
         data[k] = {
@@ -8,6 +9,7 @@ do
         }
     end
 end
+
 lib.cron.new("* * * * *",function() 
  for k, v in pairs(Config.Jobs) do
         data[k] = {
@@ -19,12 +21,7 @@ end,{
     debug = true
 })
 
-
-lib.callback.register("jk-myinfo::server::getPlayersOnline", function(source)
-    return data
-end)
-
-lib.callback.register("jk-myinfo::server::getLicenses", function(source)
+local function GetLicences(source)
     local Player = QBCore.Functions.GetPlayer(source)
     local licences = {}
     for k, v in pairs(Player.PlayerData.metadata.licences) do
@@ -43,4 +40,12 @@ lib.callback.register("jk-myinfo::server::getLicenses", function(source)
     end
     end)
     return licences
+end
+
+lib.callback.register("jk-myinfo::server::getPlayersOnline", function(source)
+    return data
+end)
+
+lib.callback.register("jk-myinfo::server::getLicenses", function(source)
+    return GetLicences(source)
 end)
