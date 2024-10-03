@@ -52,9 +52,9 @@ function App() {
     setOpen(!open());
   });
 
-  useNuiEvent("update",(data) =>{
-    setCharacterData("onlinePlayers",data)
-  })
+  useNuiEvent('update', (data) => {
+    setCharacterData('onlinePlayers', data);
+  });
   // debugData([
   //   {
   //     action: 'open',
@@ -91,15 +91,15 @@ function App() {
   //   },
   // ]);
 
-  // createEffect(() => {
-  //   if (open()) {
-  //     const timer = setTimeout(async () => {
-  //       await fetchNui('exit', {});
-  //       setOpen(false);
-  //       clearTimeout(timer);
-  //     }, 5000);
-  //   }
-  // });
+  createEffect(() => {
+    if (open()) {
+      const timer = setTimeout(async () => {
+        await fetchNui('exit', {});
+        setOpen(false);
+        clearTimeout(timer);
+      }, 5000);
+    }
+  });
 
   return (
     <>
