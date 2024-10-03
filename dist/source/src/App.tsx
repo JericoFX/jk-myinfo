@@ -55,41 +55,6 @@ function App() {
   useNuiEvent('update', (data) => {
     setCharacterData('onlinePlayers', data);
   });
-  // debugData([
-  //   {
-  //     action: 'open',
-  //     data: {
-  //       name: 'test',
-  //       job: 'test',
-  //       rank: 'test',
-  //       id: 1,
-  //       licenses: [
-  //         { name: 'Driver', status: 'Valido' },
-  //         { name: 'test', status: 'test' },
-  //         { name: 'test', status: 'test' },
-  //       ],
-  //       onlinePlayers: [
-  //         {
-  //           name: 'Mechanics',
-  //           count: 1,
-  //         },
-  //         {
-  //           name: 'Police',
-  //           count: 1,
-  //         },
-  //         {
-  //           name: 'EMS',
-  //           count: 1,
-  //         },
-  //         {
-  //           name: 'Bennys',
-  //           count: 1,
-  //         },
-  //       ],
-  //       open: true,
-  //     },
-  //   },
-  // ]);
 
   createEffect(() => {
     if (open()) {
