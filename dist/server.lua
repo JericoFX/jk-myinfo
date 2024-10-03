@@ -1,13 +1,26 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
-
-lib.callback.register("jk-myinfo::server::getPlayersOnline", function(source)
-    local data = {}
-    for k, v in pairs(Config.Jobs) do
+local data = {}
+do
+ for k, v in pairs(Config.Jobs) do
         data[k] = {
             name = k,
             count = QBCore.Functions.GetPlayersOnDuty(tostring(k))[1] or 0
         }
     end
+end
+lib.cron.new("* * * * *",function() 
+ for k, v in pairs(Config.Jobs) do
+        data[k] = {
+            name = k,
+            count = QBCore.Functions.GetPlayersOnDuty(tostring(k))[1] or 0
+        }
+    end
+end,{
+    debug = true
+})
+
+
+lib.callback.register("jk-myinfo::server::getPlayersOnline", function(source)
     return data
 end)
 
@@ -21,7 +34,13 @@ lib.callback.register("jk-myinfo::server::getLicenses", function(source)
         }
     end
     table.sort(licences, function(a, b)
-        return (a.status == "Valido" and b.status ~= "Valido") or (a.status ~= "Valido" and b.status == "Valido")
+    if (a.status == "Valido" and b.status ~= "Valido") then
+        return true
+    elseif a.status ~= "Valido" and b.status == "Valido" then
+        return false
+    else
+        return a.name < b.name
+    end
     end)
     return licences
 end)

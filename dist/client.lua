@@ -2,8 +2,11 @@ local QBCore = exports["qb-core"]:GetCoreObject()
 local PlayerData = {}
 
 CreateThread(function()
-    PlayerData = QBCore.Functions.GetPlayerData()
-    SetNuiFocus(false, false)
+    if QBCore then
+        PlayerData = QBCore.Functions.GetPlayerData()
+        SetNuiFocus(false, false)
+
+    end
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
@@ -16,7 +19,6 @@ end)
 
 RegisterCommand("myInfo", function(source, args)
     local infoOnline = lib.callback.await("jk-myinfo::server::getPlayersOnline", false)
-    -- SetNuiFocus(true, true)
     local licenses = lib.callback.await("jk-myinfo::server::getLicenses", false)
 
     SendNUIMessage({
@@ -27,17 +29,12 @@ RegisterCommand("myInfo", function(source, args)
             rank = PlayerData.job.grade.name,
             id = cache.serverId,
             licenses = licenses,
-            onlinePlayers = {
-                mechanics = infoOnline.mechanics.count,
-                police = infoOnline.police.count,
-                ems = infoOnline.ems.count,
-            },
+            onlinePlayers = infoOnline,
             open = true,
         }
     })
 end, false)
 
-RegisterNUICallback('close', function(data, cb)
+RegisterNUICallback('exit', function(data, cb)
     cb({})
-    --SetNuiFocus(false, false)
 end)
