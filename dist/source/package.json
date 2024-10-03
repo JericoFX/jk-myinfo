@@ -1,0 +1,26 @@
+{
+  "name": "myinfo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "prepare": "panda codegen",
+    "dev": "bunx --bun vite",
+    "build": "bunx --bun vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ark-ui/solid": "^4.1.0",
+    "lucide-solid": "^0.447.0",
+    "solid-js": "^1.8.20",
+    "solid-motionone": "^1.0.2",
+    "vite-tsconfig-paths": "^5.0.1"
+  },
+  "devDependencies": {
+    "@pandacss/dev": "^0.46.1",
+    "@park-ui/panda-preset": "^0.42.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1",
+    "vite-plugin-solid": "^2.10.2"
+  }
+}
