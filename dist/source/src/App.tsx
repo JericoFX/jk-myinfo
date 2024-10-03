@@ -9,14 +9,7 @@ import {
   VStack,
 } from 'styled-system/jsx';
 import Fieldset from './components/Fieldset';
-import {
-  Ambulance,
-  Award,
-  Briefcase,
-  Shield,
-  User,
-  Wrench,
-} from 'lucide-solid';
+import { Award, Briefcase, User, Wrench } from 'lucide-solid';
 import { Text } from './components/ui/text';
 import { css } from 'styled-system/css';
 import { Motion, Presence } from 'solid-motionone';
@@ -34,11 +27,29 @@ type R = {
   rank: string;
   id: number;
   licenses: { name: string; status: string }[];
-  onlinePlayers: { mechanics: number; police: number; ems: number };
+  onlinePlayers: { name: string; count: number }[];
   open: boolean;
 };
 function App() {
-  const [characterData, setCharacterData] = createStore<R>({});
+  const [characterData, setCharacterData] = createStore<R>({
+    name: '',
+    job: '',
+    rank: '',
+    id: 0,
+    licenses: [
+      {
+        name: 'test',
+        status: 'Valid',
+      },
+    ],
+    onlinePlayers: [
+      {
+        name: 'Mechanic',
+        count: 0,
+      },
+    ],
+    open: false,
+  });
   const [open, setOpen] = createSignal<boolean>(false);
   useNuiEvent('open', (data: R) => {
     setCharacterData({
@@ -52,7 +63,7 @@ function App() {
     setOpen(!open());
   });
 
-  useNuiEvent('update', (data) => {
+  useNuiEvent('update', (data: R) => {
     setCharacterData('onlinePlayers', data);
   });
 
