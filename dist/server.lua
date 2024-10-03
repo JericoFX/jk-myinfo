@@ -17,6 +17,7 @@ lib.cron.new("* * * * *",function()
             count = QBCore.Functions.GetPlayersOnDuty(tostring(k))[1] or 0
         }
     end
+    TriggerClientEvent("jk-myinfo::client::updatePlayerOnline",-1,data)
 end,{
     debug = true
 })

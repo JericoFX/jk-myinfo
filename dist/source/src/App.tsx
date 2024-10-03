@@ -52,6 +52,9 @@ function App() {
     setOpen(!open());
   });
 
+  useNuiEvent("update",(data) =>{
+    setCharacterData("onlinePlayers",data)
+  })
   // debugData([
   //   {
   //     action: 'open',

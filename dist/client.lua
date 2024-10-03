@@ -5,7 +5,6 @@ CreateThread(function()
     if QBCore then
         PlayerData = QBCore.Functions.GetPlayerData()
         SetNuiFocus(false, false)
-
     end
 end)
 
@@ -33,6 +32,14 @@ RegisterCommand("myInfo", function(source, args)
         }
     })
 end, false)
+RegisterNetEvent("jk-myinfo::client::updatePlayerOnline",function(data) 
+    local onlinePlayers = lib.callback.await("jk-myinfo::server::getPlayersOnline", 200)
+    SendNUIMessage({
+        action="update",
+        data = onlinePlayers
+    })
+end)
+
 
 RegisterNUICallback('exit', function(data, cb)
     cb({})
