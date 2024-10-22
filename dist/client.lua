@@ -34,7 +34,7 @@ end, false)
 RegisterNetEvent("jk-myInfo::client::infoPlayers",function(data) 
     SendNUIMessage({
         action="update",
-        data = onlinePlayers
+        data = data
     })
 end)
 
