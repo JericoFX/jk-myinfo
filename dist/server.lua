@@ -1,27 +1,30 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
 local data = {}
 
-do
- for k, v in pairs(Config.Jobs) do
-        data[k] = {
-            name = k,
-            count = QBCore.Functions.GetPlayersOnDuty(tostring(k))[1] or 0
-        }
+-- lib.cron.new("* * * * *",function() 
+--  for k, v in pairs(Config.Jobs) do
+--         data[k] = {
+--             name = k,
+--             count = QBCore.Functions.GetPlayersOnDuty(tostring(k))[1] or 0
+--         }
+--     end
+    
+-- end,{
+--     debug = true
+-- })
+CreateThread(function() 
+    while true do
+        Wait(5000)
+        for k, v in pairs(Config.Jobs) do
+               data[k] = {
+                   name = k,
+                   count = QBCore.Functions.GetPlayersOnDuty(tostring(k))[1] or 0
+               }
+        end
+        TriggerClientEvent("jk-myInfo::client::infoPlayers",-1,data)
+        table.wipe(data)
     end
-end
-
-lib.cron.new("* * * * *",function() 
- for k, v in pairs(Config.Jobs) do
-        data[k] = {
-            name = k,
-            count = QBCore.Functions.GetPlayersOnDuty(tostring(k))[1] or 0
-        }
-    end
-    TriggerClientEvent("jk-myinfo::client::updatePlayerOnline",-1,data)
-end,{
-    debug = true
-})
-
+end)
 local function GetLicences(source)
     local Player = QBCore.Functions.GetPlayer(source)
     local licences = {}
@@ -42,10 +45,6 @@ local function GetLicences(source)
     end)
     return licences
 end
-
-lib.callback.register("jk-myinfo::server::getPlayersOnline", function(source)
-    return data
-end)
 
 lib.callback.register("jk-myinfo::server::getLicenses", function(source)
     return GetLicences(source)

@@ -57,8 +57,8 @@ function App() {
       job: data.job,
       rank: data.rank,
       id: data.id,
+      onlinePlayers:[]
       licenses: data.licenses,
-      onlinePlayers: data.onlinePlayers,
     });
     setOpen(!open());
   });
