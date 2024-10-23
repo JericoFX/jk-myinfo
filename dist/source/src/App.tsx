@@ -19,7 +19,6 @@ import { useNuiEvent } from './utils/useNui';
 import { fetchNui } from './utils/fetchNui';
 import { isEnvBrowser } from './utils/misc';
 import { Button } from './components/ui/button';
-import { debugData } from './utils/debugData';
 import ScrollArea from './utils/ScrollArea';
 type R = {
   name: string;
@@ -36,18 +35,8 @@ function App() {
     job: '',
     rank: '',
     id: 0,
-    licenses: [
-      {
-        name: 'test',
-        status: 'Valid',
-      },
-    ],
-    onlinePlayers: [
-      {
-        name: 'Mechanic',
-        count: 0,
-      },
-    ],
+    licenses: [],
+    onlinePlayers: [],
     open: false,
   });
   const [open, setOpen] = createSignal<boolean>(false);
@@ -58,24 +47,28 @@ function App() {
       rank: data.rank,
       id: data.id,
       licenses: data.licenses,
-      onlinePlayers: data.onlinePlayers,
     });
     setOpen(!open());
   });
 
+  const [countDown, setCountDown] = createSignal<number>(5);
   useNuiEvent('update', (data: R) => {
-    setCharacterData('onlinePlayers', data);
+    setCharacterData('onlinePlayers', data.onlinePlayers);
   });
 
-  createEffect(() => {
-    if (open()) {
-      const timer = setTimeout(async () => {
-        await fetchNui('exit', {});
-        setOpen(false);
-        clearTimeout(timer);
-      }, 5000);
-    }
+  useNuiEvent('exit', () => {
+    setOpen(!open());
+    fetchNui('exit', {});
   });
+  // createEffect(() => {
+  //   if (open()) {
+  //     const timer = setTimeout(async () => {
+  //       await fetchNui('exit', {});
+  //       setOpen(false);
+  //       clearTimeout(timer);
+  //     }, 5000);
+  //   }
+  // });
 
   return (
     <>
@@ -187,91 +180,91 @@ function App() {
                   </HStack>
                 </Box>
                 <Divider></Divider>
-                <VStack
-                  position={'relative'}
-                  w='full'
-                  h='27vh'
-                  alignContent={'center'}
-                  justifyContent={'space-evenly'}
-                >
-                  <Fieldset legend='Licencias'>
-                    <For
-                      each={characterData.licenses}
-                      fallback={<Text>Ninguna</Text>}
-                    >
-                      {(license, index) => (
-                        <HStack
-                          key={index}
-                          w='full'
-                          alignContent={'center'}
-                          justifyContent={'space-between'}
+                <Fieldset padding legend='Licencias'>
+                  <For
+                    each={characterData.licenses}
+                    fallback={<Text>Ninguna</Text>}
+                  >
+                    {(license, index) => (
+                      <HStack
+                        key={index}
+                        w='full'
+                        alignContent={'center'}
+                        justifyContent={'space-between'}
+                        p='0.5'
+                      >
+                        <Text as='span' color='#9CA3AF'>
+                          {license.name}
+                        </Text>
+                        <Text
                           p='0.5'
+                          as='span'
+                          w='fit-content'
+                          borderRadius='0.25rem'
+                          borderBottom={
+                            license.status === 'Valido'
+                              ? '1px solid green'
+                              : '1px solid red'
+                          }
+                          color={'fg.default'}
                         >
-                          <Text as='span' color='#9CA3AF'>
-                            {license.name}
-                          </Text>
-                          <Text
-                            p='0.5'
-                            as='span'
-                            w='fit-content'
-                            borderRadius='0.25rem'
-                            borderBottom={
-                              license.status === 'Valido'
-                                ? '1px solid green'
-                                : '1px solid red'
-                            }
-                            color={'fg.default'}
-                          >
-                            {license.status}
-                          </Text>
-                        </HStack>
-                      )}
-                    </For>
-                  </Fieldset>{' '}
-                  <Fieldset legend='Jugadores'>
-                    <Grid columns={1} gap='1'>
-                      <ScrollArea>
-                        <For each={characterData.onlinePlayers}>
-                          {(player, index) => (
-                            <GridItem colSpan={1}>
+                          {license.status}
+                        </Text>
+                      </HStack>
+                    )}
+                  </For>
+                </Fieldset>{' '}
+                <Fieldset
+                  legend={`Jugadores Online Actualizacion cada 5 Segundos`}
+                >
+                  <Grid columns={1}>
+                    <ScrollArea>
+                      <For
+                        each={characterData.onlinePlayers}
+                        fallback={<Text>Cargando Datos...</Text>}
+                      >
+                        {(player, index) => (
+                          <GridItem colSpan={1}>
+                            <Stack
+                              justifyContent={'space-between'}
+                              alignItems={'start'}
+                              fontSize={'0.75rem'}
+                              lineHeight={'1rem'}
+                              w='full'
+                            >
                               <Stack
-                                justifyContent={'space-between'}
-                                alignItems={'start'}
-                                fontSize={'0.75rem'}
-                                lineHeight={'1rem'}
                                 w='full'
+                                alignItems={'start'}
+                                justifyContent={'space-between'}
+                                direction={'row'}
+                                p='0.5'
                               >
-                                <Stack
-                                  w='full'
-                                  alignItems={'start'}
-                                  justifyContent={'space-between'}
-                                  direction={'row'}
-                                >
-                                  <HStack alignItems={'center'}>
-                                    <Wrench
-                                      class={css({
-                                        width: '0.75rem',
-                                        height: '0.75rem',
-                                        color: '#FBBF24',
-                                      })}
-                                    />
-                                    <Text as='span'>{player.name} :</Text>
-                                  </HStack>
-                                  <Text>
-                                    {player?.count === null ||
-                                    player?.count === undefined
-                                      ? 0
-                                      : player.count}
+                                <HStack alignItems={'center'} p='0.5'>
+                                  <Wrench
+                                    class={css({
+                                      width: '0.75rem',
+                                      height: '0.75rem',
+                                      color: '#FBBF24',
+                                    })}
+                                  />
+                                  <Text as='span' p='0.5'>
+                                    {player.name.toUpperCase()} :
                                   </Text>
-                                </Stack>
+                                </HStack>
+                                <Text>
+                                  {player?.count === null ||
+                                  player?.count === undefined
+                                    ? 0
+                                    : player.count}
+                                </Text>
                               </Stack>
-                            </GridItem>
-                          )}
-                        </For>
-                      </ScrollArea>
-                    </Grid>
-                  </Fieldset>
-                </VStack>
+                            </Stack>
+                          </GridItem>
+                        )}
+                      </For>
+                    </ScrollArea>
+                  </Grid>
+                </Fieldset>
               </Box>
             </Motion.div>
           </Show>

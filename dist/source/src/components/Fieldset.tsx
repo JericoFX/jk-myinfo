@@ -18,8 +18,8 @@ const Fieldset: Component<{ legend?: string; children?: JSXElement }> = (
         <legend
           {...props}
           class={css({
-            paddingLeft: '0.25rem',
-            paddingRight: '0.25rem',
+            paddingLeft: props.padding ? '0.25rem' : '0',
+            paddingRight: props.padding ? '0.25rem' : '0',
             fontSize: '0.85rem',
             lineHeight: '1rem',
             fontWeight: 600,

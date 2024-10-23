@@ -1,6 +1,9 @@
 Config = {}
 Config.Jobs = {
-    mechanics = true,
+    autoexotic = true,
     police = true,
-    ems = true
+    ems = true,
+    lscustoms = true,
+    tow = true,
+    towtruck = true
 }

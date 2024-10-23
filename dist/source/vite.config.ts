@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [tsconfigPaths({ root: './' }), solid()],
   base: './',
   build: {
-    outDir: './web',
+    outDir: '../web',
     emptyOutDir: true,
     rollupOptions: {
       output: {
