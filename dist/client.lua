@@ -16,9 +16,6 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function(job)
     PlayerData.job = job
 end)
 
-RegisterCommand("+myInfo", function(source, args)
-
-end, false)
 
 local keybind = lib.addKeybind({
     name = 'myInfo',

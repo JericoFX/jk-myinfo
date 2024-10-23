@@ -1,15 +1,6 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
 local data = {}
 
-
-local function AreTablesEqual(t1, t2)
-    if #t1 ~= #t2 then return false end
-    for i = 1, #t1 do
-        if t1[i].name ~= t2[i].name or t1[i].count ~= t2[i].count then return false end
-    end
-    return true
-end
-
 CreateThread(function()
     while true do
         Wait(5000)

@@ -51,7 +51,6 @@ function App() {
     setOpen(!open());
   });
 
-  const [countDown, setCountDown] = createSignal<number>(5);
   useNuiEvent('update', (data: R) => {
     setCharacterData('onlinePlayers', data.onlinePlayers);
   });
