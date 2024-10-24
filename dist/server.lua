@@ -7,7 +7,7 @@ CreateThread(function()
         for k, v in pairs(Config.Jobs) do
             data[#data + 1] = {
                 name = k,
-                count = QBCore.Functions.GetPlayersOnDuty(tostring(k))[1] or 0
+                count = QBCore.Functions.GetDutyCount(tostring(k))
             }
         end
         TriggerClientEvent("jk-myinfo::client::updatePlayerOnline", -1, data)
